@@ -95,14 +95,14 @@ def send_control_message(text):
 
 
 def create_group(group_name):
-    url = 'https://slack.com/api/groups.create'
-    r = requests.get(url, params={'token': _get_slack_token(), 'name': group_name})
+    url = 'https://slack.com/api/conversations.create'
+    r = requests.get(url, params={'token': _get_slack_token(), 'name': group_name, 'is_private': True})
     json = r.json()
     if not json['ok']:
         if json['error'] == 'name_taken':
             raise NameTaken
         raise SlackError(json['error'])
-    g = json['group']
+    g = json['channel']
     return SlackGroup(g['id'], g['name'])
 
 
